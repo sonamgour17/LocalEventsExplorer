@@ -99,3 +99,5 @@ Due to the time limit:
 - Architecture and sequence diagrams
 
 ## Demo Video
+
+https://drive.google.com/file/d/1m_NQkuR4SNvvDSnW6h3rw9Ch819FciI_/view?usp=sharing
