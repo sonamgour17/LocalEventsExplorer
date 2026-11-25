@@ -12,16 +12,23 @@ import Foundation
 /// ViewModels depend on protocols, so tests can pass mocks.
 @MainActor
 final class AppContainer {
-
+    
     // MARK: - Services
     let networkService: NetworkServiceProtocol
-
+    let cacheService: CacheServiceProtocol
+    
+    
     init() {
         self.networkService = NetworkService()
+        self.cacheService = CacheService()
     }
-
+    
     // MARK: - ViewModel factories
     func makeEventListViewModel() -> EventListViewModel {
-        EventListViewModel(networkService: networkService)
+        EventListViewModel(
+            networkService: networkService,
+            cacheService: cacheService
+            
+        )
     }
 }

@@ -22,6 +22,10 @@ enum AppConstants {
         static let networkError = "wifi.exclamationmark"
     }
     
+    nonisolated enum Cache {
+        static let eventTTL: TimeInterval = 300        // 5 minutes
+    }
+    
     nonisolated enum Message {
         static let invalidURL = "Invalid request URL."
         static let noInternet = "No internet connection. Please try again."

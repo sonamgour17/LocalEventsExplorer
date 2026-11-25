@@ -23,9 +23,11 @@ final class EventListViewModel {
     private(set) var state: EventListViewState = .loading
     
     private let networkService: NetworkServiceProtocol
+    private let cacheService: CacheServiceProtocol
     
-    init(networkService: NetworkServiceProtocol) {
+    init(networkService: NetworkServiceProtocol, cacheService: CacheServiceProtocol) {
         self.networkService = networkService
+        self.cacheService = cacheService
     }
     
     /// Events currently on screen (empty if not loaded).
@@ -34,21 +36,34 @@ final class EventListViewModel {
         return []
     }
     
-    /// Loads events from the network. Used on appear, pull to refresh and Retry.
-    func loadEvents() async {
+    /// Loads events:
+    /// 1. From cache if valid (skipped when `forceRefresh` is true)
+    /// 2. Shows spinner on first load
+    /// 3. Fetches from network and saves to cache
+    /// 4. Shows error if the request fails
+    func loadEvents(forceRefresh: Bool = false) async {
+        // 1. Use cache if valid
+        if !forceRefresh, let cached = await cacheService.fetch() {
+            print("CACHE: \(cached.count) events")
+            show(cached)
+            return
+        }
         
-        // Show the spinner only if nothing is on screen yet.
+        // 2. Spinner only on first load
         if events.isEmpty {
             state = .loading
         }
         
+        // 3. Fetch from network and cache it
         do {
+            print("NETWORK: fetching...")
             let fetchedEvents: [Event] = try await networkService.fetch(.events)
+            await cacheService.save(fetchedEvents)
             show(fetchedEvents)
-            
         } catch is CancellationError {
-            // The screen went away before loading finished. Nothing to update.
+            // Screen closed; ignore
         } catch {
+            // 4. Show error
             state = .error(error as? APIError ?? .unknown)
         }
     }

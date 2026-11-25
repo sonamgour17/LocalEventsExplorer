@@ -38,7 +38,7 @@ struct EventListView: View {
             }
             .listStyle(.plain)
             .refreshable {
-                await viewModel.loadEvents()
+                await viewModel.loadEvents(forceRefresh: true)
             }
             
         case .empty:
@@ -62,16 +62,22 @@ struct EventListView: View {
     }
     
     private func errorView(_ message: String) -> some View {
+        
         VStack(spacing: AppConstants.Layout.standardSpacing) {
+            
             Image(systemName: AppConstants.Image.networkError)
                 .font(.largeTitle)
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
+            
             Text(message)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
+            
             Button(AppConstants.Button.retry) {
-                Task { await viewModel.loadEvents() }
+                Task {
+                    await viewModel.loadEvents(forceRefresh: true)
+                }
             }
             .buttonStyle(.borderedProminent)
         }
