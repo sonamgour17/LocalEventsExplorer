@@ -10,13 +10,13 @@ import SwiftUI
 /// Full details of one event.
 struct EventDetailView: View {
     @State private var viewModel: EventDetailViewModel
-
+    
     init(viewModel: EventDetailViewModel) {
         _viewModel = State(initialValue: viewModel)
     }
-
+    
     private var event: Event { viewModel.event }
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -25,7 +25,7 @@ struct EventDetailView: View {
                     .frame(maxWidth: .infinity)
                     .clipped()
                     .accessibilityHidden(true)
-
+                
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(event.title)
@@ -35,20 +35,37 @@ struct EventDetailView: View {
                             viewModel.toggleBookmark()
                         }
                     }
-
+                    
                     Label(event.location, systemImage: AppConstants.Image.location)
                         .foregroundStyle(.secondary)
-
+                    
                     if let date = event.eventDate {
                         Label(date.formatted(date: .abbreviated, time: .shortened),
                               systemImage: AppConstants.Image.date)
+                        .foregroundStyle(.secondary)
+                    }
+                    
+                    if let distanceText = viewModel.distanceText {
+                        Label("\(distanceText) away", systemImage: AppConstants.Image.distance)
                             .foregroundStyle(.secondary)
                     }
+                    
+                    Button {
+                        viewModel.openInMaps()
+                    } label: {
+                        Label(AppConstants.Button.openInMaps, systemImage: AppConstants.Image.map)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.top, 8)
                 }
                 .padding(.horizontal)
             }
         }
         .navigationTitle(AppConstants.Title.details)
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await viewModel.onAppear()
+        }
     }
 }

@@ -12,6 +12,8 @@ nonisolated enum AppLogger {
     static let network = Logger(subsystem: subsystem, category: "Network")
     
     static let persistence = Logger(subsystem: subsystem, category: "Persistence")
+    
+    static let location = Logger(subsystem: subsystem, category: "Location")
 }
 
 extension Logger {

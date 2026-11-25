@@ -18,6 +18,7 @@ final class AppContainer {
     let cacheService: CacheServiceProtocol
     let imageCacheService: ImageCacheServiceProtocol
     let coreDataService: CoreDataServiceProtocol
+    let locationService: LocationServiceProtocol
     
     
     init() {
@@ -25,6 +26,7 @@ final class AppContainer {
         self.cacheService = CacheService()
         self.imageCacheService = ImageCacheService()
         self.coreDataService = CoreDataService(manager: CoreDataManager())
+        self.locationService = LocationService()
     }
     
     // MARK: - ViewModel factories
@@ -33,12 +35,15 @@ final class AppContainer {
             networkService: networkService,
             cacheService: cacheService,
             coreDataService: coreDataService
-            
         )
     }
-    
+
     func makeEventDetailViewModel(event: Event) -> EventDetailViewModel {
-        EventDetailViewModel(event: event, coreDataService: coreDataService)
+        EventDetailViewModel(
+            event: event,
+            coreDataService: coreDataService,
+            locationService: locationService
+        )
     }
     
     func makeBookmarksViewModel() -> BookmarksViewModel {
