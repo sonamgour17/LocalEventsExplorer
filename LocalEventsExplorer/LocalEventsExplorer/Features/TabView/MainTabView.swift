@@ -32,6 +32,7 @@ struct MainTabView: View {
                 .tabItem { Label(AppTab.bookmarks.title, systemImage: AppTab.bookmarks.systemImage) }
                 .tag(AppTab.bookmarks)
         }
+        .environment(\.imageCache, container.imageCacheService)
     }
     
     

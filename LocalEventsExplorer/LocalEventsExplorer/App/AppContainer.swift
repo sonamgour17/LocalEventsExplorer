@@ -16,11 +16,13 @@ final class AppContainer {
     // MARK: - Services
     let networkService: NetworkServiceProtocol
     let cacheService: CacheServiceProtocol
+    let imageCacheService: ImageCacheServiceProtocol
     
     
     init() {
         self.networkService = NetworkService()
         self.cacheService = CacheService()
+        self.imageCacheService = ImageCacheService() 
     }
     
     // MARK: - ViewModel factories

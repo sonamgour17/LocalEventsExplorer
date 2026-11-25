@@ -20,10 +20,14 @@ enum AppConstants {
         static let bookmarks = "bookmark.fill"
         static let emptyEvents = "calendar.badge.exclamationmark"
         static let networkError = "wifi.exclamationmark"
+        static let photo = "photo"
+        
     }
     
     nonisolated enum Cache {
         static let eventTTL: TimeInterval = 300        // 5 minutes
+        static let maximumImages = 50  // LRU limit (memory)
+        
     }
     
     nonisolated enum Message {
@@ -48,6 +52,8 @@ enum AppConstants {
         static let standardSpacing: CGFloat = 12
         static let smallSpacing: CGFloat = 4
         static let verticalPadding: CGFloat = 4
+        static let imageSize: CGFloat = 70
+        static let cornerRadius: CGFloat = 8
     }
     
     enum API {
