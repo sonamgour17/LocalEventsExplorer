@@ -12,7 +12,7 @@ import Foundation
 /// ViewModels depend on protocols, so tests can pass mocks.
 @MainActor
 final class AppContainer {
-    
+
     // MARK: - Services
     let networkService: NetworkServiceProtocol
     let cacheService: CacheServiceProtocol
@@ -20,14 +20,13 @@ final class AppContainer {
     let coreDataService: CoreDataServiceProtocol
     let locationService: LocationServiceProtocol
     let backgroundRefreshService: BackgroundRefreshService
-    
-    
+
     init() {
         // Same instances are shared with the background service
         let networkService = NetworkService()
         let cacheService = CacheService()
         let coreDataService = CoreDataService(manager: CoreDataManager())
-        
+
         self.networkService = networkService
         self.cacheService = cacheService
         self.coreDataService = coreDataService
@@ -39,7 +38,7 @@ final class AppContainer {
             coreDataService: coreDataService
         )
     }
-    
+
     // MARK: - ViewModel factories
     func makeEventListViewModel() -> EventListViewModel {
         EventListViewModel(
@@ -48,7 +47,7 @@ final class AppContainer {
             coreDataService: coreDataService
         )
     }
-    
+
     func makeEventDetailViewModel(event: Event) -> EventDetailViewModel {
         EventDetailViewModel(
             event: event,
@@ -56,11 +55,11 @@ final class AppContainer {
             locationService: locationService
         )
     }
-    
+
     func makeBookmarksViewModel() -> BookmarksViewModel {
         BookmarksViewModel(coreDataService: coreDataService)
     }
-    
+
     // Called by iOS for the background task
     func handleBackgroundRefresh() async {
         await backgroundRefreshService.handleRefresh()

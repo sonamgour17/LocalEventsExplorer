@@ -27,7 +27,7 @@ struct Event: Codable, Identifiable, Hashable, Sendable {
 }
 
 extension Event {
-    
+
     /// Sample event for SwiftUI previews.
     static let preview = Event(
         id: "1",

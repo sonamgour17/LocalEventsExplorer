@@ -9,12 +9,12 @@ import SwiftUI
 
 struct CachedAsyncImage: View {
     let url: URL?
-    
+
     @Environment(\.imageCache) private var imageCache
-    
+
     @State private var uiImage: UIImage?
     @State private var isLoading = false
-    
+
     var body: some View {
         Group {
             if let uiImage {
@@ -43,6 +43,6 @@ struct CachedAsyncImage: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    CachedAsyncImage()
-//}
+// }

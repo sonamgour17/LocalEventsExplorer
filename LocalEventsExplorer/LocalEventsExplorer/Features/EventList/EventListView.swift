@@ -9,29 +9,29 @@ import SwiftUI
 
 /// Events list screen: loading, list, empty and error states.
 struct EventListView: View {
-    
+
     @State private var viewModel: EventListViewModel
-    
+
     init(viewModel: EventListViewModel) {
         _viewModel = State(initialValue: viewModel)
     }
-    
+
     var body: some View {
         content
             .navigationTitle(AppConstants.Title.events)
             .task {
                 await viewModel.loadEvents()
             }
-        
+
     }
-    
+
     /// Picks what to show based on the current state.
     @ViewBuilder
     private var content: some View {
         switch viewModel.state {
         case .loading:
             ProgressView(AppConstants.Message.loadingEvents)
-            
+
         case .loaded(let events):
             List {
                 if viewModel.isShowingOfflineData {
@@ -47,21 +47,21 @@ struct EventListView: View {
             .refreshable {
                 await viewModel.loadEvents(forceRefresh: true)
             }
-            
+
         case .empty:
             emptyView
-            
+
         case .error(let apiError):
             errorView(apiError.errorDescription ?? AppConstants.Message.somethingWentWrong)
         }
     }
-    
+
     private var offlineBanner: some View {
         Label(AppConstants.Message.offline, systemImage: AppConstants.Image.offline)
             .font(.footnote)
             .foregroundStyle(.secondary)
     }
-    
+
     private var emptyView: some View {
         VStack(spacing: AppConstants.Layout.standardSpacing) {
             Image(systemName: AppConstants.Image.emptyEvents)
@@ -73,20 +73,20 @@ struct EventListView: View {
         }
         .padding()
     }
-    
+
     private func errorView(_ message: String) -> some View {
-        
+
         VStack(spacing: AppConstants.Layout.standardSpacing) {
-            
+
             Image(systemName: AppConstants.Image.networkError)
                 .font(.largeTitle)
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
-            
+
             Text(message)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
-            
+
             Button(AppConstants.Button.retry) {
                 Task {
                     await viewModel.loadEvents(forceRefresh: true)
@@ -97,7 +97,6 @@ struct EventListView: View {
         .padding()
     }
 }
-
 
 #Preview {
     NavigationStack {

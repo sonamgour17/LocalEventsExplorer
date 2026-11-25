@@ -1,0 +1,29 @@
+included:
+  - LocalEventsExplorer
+  - LocalEventsExplorerTests
+
+excluded:
+  - LocalEventsExplorerUITests
+
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - closure_spacing
+  - first_where
+
+line_length:
+  warning: 120
+  error: 160
+  ignores_comments: true
+
+identifier_name:
+  min_length: 2
+  excluded:
+    - id
+  allowed_symbols: ["_"]
+
+type_body_length:
+  warning: 250
+
+function_body_length:
+  warning: 50

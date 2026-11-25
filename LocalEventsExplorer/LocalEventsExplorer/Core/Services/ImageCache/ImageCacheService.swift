@@ -14,7 +14,7 @@ protocol ImageCacheServiceProtocol: Sendable {
 
 /// In-memory image cache with an LRU limit. Actor = thread-safe.
 actor ImageCacheService: ImageCacheServiceProtocol {
-    
+
     private var cache: [URL: UIImage] = [:]
     private var accessOrder: [URL] = []    // oldest first
     private let maxItems: Int
@@ -26,7 +26,7 @@ actor ImageCacheService: ImageCacheServiceProtocol {
     }
 
     func loadImage(from url: URL) async -> UIImage? {
-        
+
         // 1. Return from cache
         if let cached = cache[url] {
             markAsRecentlyUsed(url)
@@ -51,7 +51,7 @@ actor ImageCacheService: ImageCacheServiceProtocol {
 
         // Over the limit: remove the least recently used
         if accessOrder.count > maxItems {
-            
+
             let oldest = accessOrder.removeFirst()
             cache.removeValue(forKey: oldest)
         }

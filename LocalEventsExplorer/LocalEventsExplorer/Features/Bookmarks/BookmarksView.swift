@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct BookmarksView: View {
-    
+
     @State private var viewModel: BookmarksViewModel
-    
+
     init(viewModel: BookmarksViewModel) {
         _viewModel = State(initialValue: viewModel)
     }
-    
+
     var body: some View {
         Group {
             if viewModel.bookmarkedEvents.isEmpty {
@@ -39,7 +39,7 @@ struct BookmarksView: View {
             viewModel.loadBookmarks()
         }
     }
-    
+
     private var emptyState: some View {
         VStack(spacing: AppConstants.Layout.standardSpacing) {
             Image(systemName: AppConstants.Image.emptyBookmark)
@@ -52,6 +52,6 @@ struct BookmarksView: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    BookmarksView()
-//}
+// }
