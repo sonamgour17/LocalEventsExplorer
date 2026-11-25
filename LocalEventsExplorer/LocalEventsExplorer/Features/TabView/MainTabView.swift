@@ -40,12 +40,28 @@ struct MainTabView: View {
     private var eventsTab: some View {
         NavigationStack(path: $router.eventsPath) {
             EventListView(viewModel: container.makeEventListViewModel())
+                .navigationDestination(for: AppRoute.self) { route in
+                    destination(for: route)
+                }
+            
         }
     }
     
     private var bookmarksTab: some View {
         NavigationStack(path: $router.bookmarksPath) {
-            BookmarksView()
+            BookmarksView(viewModel: container.makeBookmarksViewModel())
+                .navigationDestination(for: AppRoute.self) { route in
+                    destination(for: route)
+                }
+        }
+    }
+    
+    // All destinations in one place
+    @ViewBuilder
+    private func destination(for route: AppRoute) -> some View {
+        switch route {
+        case .eventDetail(let event):
+            EventDetailView(viewModel: container.makeEventDetailViewModel(event: event))
         }
     }
 }

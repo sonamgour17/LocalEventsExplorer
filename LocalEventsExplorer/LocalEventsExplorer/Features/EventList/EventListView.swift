@@ -38,7 +38,9 @@ struct EventListView: View {
                     offlineBanner
                 }
                 ForEach(events) { event in
-                    EventRowView(event: event)
+                    NavigationLink(value: AppRoute.eventDetail(event)) {
+                        EventRowView(event: event)
+                    }
                 }
             }
             .listStyle(.plain)

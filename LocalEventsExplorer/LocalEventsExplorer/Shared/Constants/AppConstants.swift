@@ -13,6 +13,8 @@ enum AppConstants {
     enum Title {
         static let events = "Events"
         static let bookmarks = "Bookmarks"
+        static let details = "Details"
+
     }
     
     enum Image {
@@ -22,6 +24,9 @@ enum AppConstants {
         static let networkError = "wifi.exclamationmark"
         static let photo = "photo"
         static let offline = "wifi.slash"
+        static let emptyBookmark = "bookmark.slash"
+               static let location = "mappin.and.ellipse"
+               static let date = "calendar"
         
         
     }
@@ -41,6 +46,8 @@ enum AppConstants {
         static let somethingWentWrong = "Something went wrong."
         static let noEvents = "No events found"
         static let offline = "You're offline. Showing saved events."
+        static let noBookmarks = "No bookmarks yet"
+
         
         
         static func serverError(statusCode: Int) -> String {
@@ -50,6 +57,8 @@ enum AppConstants {
     
     enum Button {
         static let retry = "Retry"
+        static let addBookmark = "Add bookmark"
+               static let removeBookmark = "Remove bookmark"
     }
     
     enum Layout {
@@ -58,6 +67,8 @@ enum AppConstants {
         static let verticalPadding: CGFloat = 4
         static let imageSize: CGFloat = 70
         static let cornerRadius: CGFloat = 8
+        static let detailImageHeight: CGFloat = 220
+
     }
     
     enum API {
@@ -70,5 +81,6 @@ enum AppConstants {
         static let networkRequestFailed = "Network request failed"
         static let coreDataLoadFailed = "Core Data failed to load"
         static let coreDataSaveFailed = "Core Data save failed"
+        static let removeBookmarkFailed = "Failed to remove bookmark"
     }
 }

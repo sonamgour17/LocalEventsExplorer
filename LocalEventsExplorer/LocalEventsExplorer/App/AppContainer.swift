@@ -32,8 +32,16 @@ final class AppContainer {
         EventListViewModel(
             networkService: networkService,
             cacheService: cacheService,
-            coreDataService: coreDataService     
+            coreDataService: coreDataService
             
         )
+    }
+    
+    func makeEventDetailViewModel(event: Event) -> EventDetailViewModel {
+        EventDetailViewModel(event: event, coreDataService: coreDataService)
+    }
+    
+    func makeBookmarksViewModel() -> BookmarksViewModel {
+        BookmarksViewModel(coreDataService: coreDataService)
     }
 }
