@@ -33,8 +33,13 @@ struct EventListView: View {
             ProgressView(AppConstants.Message.loadingEvents)
             
         case .loaded(let events):
-            List(events) { event in
-                EventRowView(event: event)
+            List {
+                if viewModel.isShowingOfflineData {
+                    offlineBanner
+                }
+                ForEach(events) { event in
+                    EventRowView(event: event)
+                }
             }
             .listStyle(.plain)
             .refreshable {
@@ -47,6 +52,12 @@ struct EventListView: View {
         case .error(let apiError):
             errorView(apiError.errorDescription ?? AppConstants.Message.somethingWentWrong)
         }
+    }
+    
+    private var offlineBanner: some View {
+        Label(AppConstants.Message.offline, systemImage: AppConstants.Image.offline)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
     }
     
     private var emptyView: some View {

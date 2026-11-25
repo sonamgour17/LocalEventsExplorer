@@ -21,6 +21,8 @@ enum AppConstants {
         static let emptyEvents = "calendar.badge.exclamationmark"
         static let networkError = "wifi.exclamationmark"
         static let photo = "photo"
+        static let offline = "wifi.slash"
+        
         
     }
     
@@ -38,6 +40,8 @@ enum AppConstants {
         static let loadingEvents = "Loading events..."
         static let somethingWentWrong = "Something went wrong."
         static let noEvents = "No events found"
+        static let offline = "You're offline. Showing saved events."
+        
         
         static func serverError(statusCode: Int) -> String {
             "Server error (\(statusCode)). Please try again later."
@@ -64,5 +68,7 @@ enum AppConstants {
     /// Developer-only console messages. `nonisolated` so they can be used from any thread.
     nonisolated enum LogMessage {
         static let networkRequestFailed = "Network request failed"
+        static let coreDataLoadFailed = "Core Data failed to load"
+        static let coreDataSaveFailed = "Core Data save failed"
     }
 }

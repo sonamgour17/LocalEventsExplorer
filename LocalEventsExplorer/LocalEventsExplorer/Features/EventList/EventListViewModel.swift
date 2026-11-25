@@ -20,15 +20,27 @@ enum EventListViewState: Equatable {
 @MainActor
 @Observable
 final class EventListViewModel {
+    
     private(set) var state: EventListViewState = .loading
+    
+    /// True when showing saved events because the network failed.
+    private(set) var isShowingOfflineData = false
     
     private let networkService: NetworkServiceProtocol
     private let cacheService: CacheServiceProtocol
+    private let coreDataService: CoreDataServiceProtocol
     
-    init(networkService: NetworkServiceProtocol, cacheService: CacheServiceProtocol) {
-        self.networkService = networkService
-        self.cacheService = cacheService
-    }
+    
+    init(
+        networkService: NetworkServiceProtocol,
+        cacheService: CacheServiceProtocol,
+        coreDataService: CoreDataServiceProtocol) {
+            
+            self.networkService = networkService
+            self.cacheService = cacheService
+            self.coreDataService = coreDataService
+            
+        }
     
     /// Events currently on screen (empty if not loaded).
     var events: [Event] {
@@ -39,12 +51,12 @@ final class EventListViewModel {
     /// Loads events:
     /// 1. From cache if valid (skipped when `forceRefresh` is true)
     /// 2. Shows spinner on first load
-    /// 3. Fetches from network and saves to cache
-    /// 4. Shows error if the request fails
+    /// 3. Fetches from network, saves to cache and Core Data
+    /// 4. On failure, shows saved events (offline) or an error
     func loadEvents(forceRefresh: Bool = false) async {
         // 1. Use cache if valid
         if !forceRefresh, let cached = await cacheService.fetch() {
-            print("CACHE: \(cached.count) events")
+            isShowingOfflineData = false
             show(cached)
             return
         }
@@ -54,17 +66,31 @@ final class EventListViewModel {
             state = .loading
         }
         
-        // 3. Fetch from network and cache it
+        // 3. Fetch from network and save
         do {
-            print("NETWORK: fetching...")
+            print("NETWORK: fetching...")   
             let fetchedEvents: [Event] = try await networkService.fetch(.events)
             await cacheService.save(fetchedEvents)
+            coreDataService.saveLastFetchedEvents(fetchedEvents)
+            isShowingOfflineData = false
             show(fetchedEvents)
         } catch is CancellationError {
             // Screen closed; ignore
         } catch {
-            // 4. Show error
+            // 4. Offline fallback
+            handleFailure(error)
+        }
+    }
+    
+    /// Shows saved events if any, otherwise the error.
+    private func handleFailure(_ error: Error) {
+        let savedEvents = coreDataService.fetchLastFetchedEvents()
+        
+        if savedEvents.isEmpty {
             state = .error(error as? APIError ?? .unknown)
+        } else {
+            isShowingOfflineData = true
+            state = .loaded(savedEvents)
         }
     }
     

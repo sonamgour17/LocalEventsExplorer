@@ -17,19 +17,22 @@ final class AppContainer {
     let networkService: NetworkServiceProtocol
     let cacheService: CacheServiceProtocol
     let imageCacheService: ImageCacheServiceProtocol
+    let coreDataService: CoreDataServiceProtocol
     
     
     init() {
         self.networkService = NetworkService()
         self.cacheService = CacheService()
-        self.imageCacheService = ImageCacheService() 
+        self.imageCacheService = ImageCacheService()
+        self.coreDataService = CoreDataService(manager: CoreDataManager())
     }
     
     // MARK: - ViewModel factories
     func makeEventListViewModel() -> EventListViewModel {
         EventListViewModel(
             networkService: networkService,
-            cacheService: cacheService
+            cacheService: cacheService,
+            coreDataService: coreDataService     
             
         )
     }

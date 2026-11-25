@@ -10,6 +10,8 @@ nonisolated enum AppLogger {
     private static let subsystem = "com.sonamgour.LocalEventsExplorer"
 
     static let network = Logger(subsystem: subsystem, category: "Network")
+    
+    static let persistence = Logger(subsystem: subsystem, category: "Persistence")
 }
 
 extension Logger {
