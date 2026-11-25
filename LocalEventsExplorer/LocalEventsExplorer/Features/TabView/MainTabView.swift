@@ -9,10 +9,17 @@ import SwiftUI
 
 /// Root screen: two tabs, each with its own navigation stack (own back history).
 struct MainTabView: View {
-
+    
     /// @State keeps the router alive while this view exists.
     @State private var router = AppRouter()
-
+    
+    private let container: AppContainer
+    
+    
+    init(container: AppContainer) {
+        self.container = container
+    }
+    
     var body: some View {
         
         TabView(selection: $router.selectedTab) {
@@ -20,19 +27,21 @@ struct MainTabView: View {
             eventsTab
                 .tabItem { Label(AppTab.events.title, systemImage: AppTab.events.systemImage) }
                 .tag(AppTab.events)
-
+            
             bookmarksTab
                 .tabItem { Label(AppTab.bookmarks.title, systemImage: AppTab.bookmarks.systemImage) }
                 .tag(AppTab.bookmarks)
         }
     }
-
+    
+    
+    
     private var eventsTab: some View {
         NavigationStack(path: $router.eventsPath) {
-            EventListView()
+            EventListView(viewModel: container.makeEventListViewModel())
         }
     }
-
+    
     private var bookmarksTab: some View {
         NavigationStack(path: $router.bookmarksPath) {
             BookmarksView()
@@ -41,5 +50,5 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView()
+    MainTabView(container: AppContainer())
 }

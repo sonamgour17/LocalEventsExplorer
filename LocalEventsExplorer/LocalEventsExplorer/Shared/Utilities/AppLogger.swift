@@ -1,9 +1,6 @@
-//
 //  AppLogger.swift
 //  LocalEventsExplorer
-//
 //  Created by Sonam Gour on 2026-11-25.
-//
 
 import Foundation
 import OSLog
