@@ -19,14 +19,25 @@ final class AppContainer {
     let imageCacheService: ImageCacheServiceProtocol
     let coreDataService: CoreDataServiceProtocol
     let locationService: LocationServiceProtocol
+    let backgroundRefreshService: BackgroundRefreshService
     
     
     init() {
-        self.networkService = NetworkService()
-        self.cacheService = CacheService()
+        // Same instances are shared with the background service
+        let networkService = NetworkService()
+        let cacheService = CacheService()
+        let coreDataService = CoreDataService(manager: CoreDataManager())
+        
+        self.networkService = networkService
+        self.cacheService = cacheService
+        self.coreDataService = coreDataService
         self.imageCacheService = ImageCacheService()
-        self.coreDataService = CoreDataService(manager: CoreDataManager())
         self.locationService = LocationService()
+        self.backgroundRefreshService = BackgroundRefreshService(
+            networkService: networkService,
+            cacheService: cacheService,
+            coreDataService: coreDataService
+        )
     }
     
     // MARK: - ViewModel factories
@@ -37,7 +48,7 @@ final class AppContainer {
             coreDataService: coreDataService
         )
     }
-
+    
     func makeEventDetailViewModel(event: Event) -> EventDetailViewModel {
         EventDetailViewModel(
             event: event,
@@ -48,5 +59,10 @@ final class AppContainer {
     
     func makeBookmarksViewModel() -> BookmarksViewModel {
         BookmarksViewModel(coreDataService: coreDataService)
+    }
+    
+    // Called by iOS for the background task
+    func handleBackgroundRefresh() async {
+        await backgroundRefreshService.handleRefresh()
     }
 }

@@ -81,7 +81,7 @@ enum AppConstants {
         static let eventsPath = "/events"
     }
     
-    /// Developer-only console messages. `nonisolated` so they can be used from any thread.
+    
     nonisolated enum LogMessage {
         static let networkRequestFailed = "Network request failed"
         static let coreDataLoadFailed = "Core Data failed to load"
@@ -89,5 +89,12 @@ enum AppConstants {
         static let removeBookmarkFailed = "Failed to remove bookmark"
         static let locationFailed = "Location error"
         static let geocodingFailed = "Geocoding failed"
+        static let scheduleRefreshFailed = "Could not schedule refresh"
+        static let backgroundRefreshFailed = "Background refresh failed"
+    }
+    
+    nonisolated enum Background {
+        static let refreshTaskIdentifier = "com.sonamgour.LocalEventsExplorer.refresh" // must match Info
+        static let refreshInterval: TimeInterval = 4 * 60 * 60 // 4 hours
     }
 }

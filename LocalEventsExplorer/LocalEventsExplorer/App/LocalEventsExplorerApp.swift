@@ -16,7 +16,10 @@ struct LocalEventsExplorerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView(container: container)
+            RootView(container: container)
+        }
+        .backgroundTask(.appRefresh(AppConstants.Background.refreshTaskIdentifier)) { [container] in
+            await container.handleBackgroundRefresh()
         }
     }
 }
