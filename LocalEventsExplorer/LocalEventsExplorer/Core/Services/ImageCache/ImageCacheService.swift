@@ -29,7 +29,6 @@ actor ImageCacheService: ImageCacheServiceProtocol {
         
         // 1. Return from cache
         if let cached = cache[url] {
-            print("CACHE HIT")
             markAsRecentlyUsed(url)
             return cached
         }
@@ -55,7 +54,6 @@ actor ImageCacheService: ImageCacheServiceProtocol {
             
             let oldest = accessOrder.removeFirst()
             cache.removeValue(forKey: oldest)
-            print("REMOVED oldest, count: \(cache.count)")
         }
     }
 

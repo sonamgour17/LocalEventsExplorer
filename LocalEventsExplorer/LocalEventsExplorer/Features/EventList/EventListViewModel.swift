@@ -68,7 +68,6 @@ final class EventListViewModel {
         
         // 3. Fetch from network and save
         do {
-            print("NETWORK: fetching...")   
             let fetchedEvents: [Event] = try await networkService.fetch(.events)
             await cacheService.save(fetchedEvents)
             coreDataService.saveLastFetchedEvents(fetchedEvents)

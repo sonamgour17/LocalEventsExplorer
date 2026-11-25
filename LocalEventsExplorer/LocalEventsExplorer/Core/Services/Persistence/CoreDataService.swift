@@ -50,7 +50,6 @@ final class CoreDataService: CoreDataServiceProtocol {
             cached.lastFetchedAt = Date()
         }
         manager.save()
-        print("CORE DATA SAVED: \(events.count) events")
         
     }
     
@@ -60,9 +59,7 @@ final class CoreDataService: CoreDataServiceProtocol {
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         
         guard let results = try? manager.context.fetch(request) else { return [] }
-        
-        print("CORE DATA LOADED: \(results.count) events")
-        
+                
         return results.map {
             makeEvent(id: $0.id, title: $0.title, location: $0.location, time: $0.time, imageUrl: $0.imageUrl)
         }
